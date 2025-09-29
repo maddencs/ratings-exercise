@@ -1,5 +1,3 @@
-from venv import create
-
 import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -56,3 +54,12 @@ class TestRatingEndpoints:
 
         rating.refresh_from_db()
         assert rating.number_rating == 2
+
+    def test_other_user_cant_update_rating(self):
+        new_user = User.objects.create(username='test2', password='')
+        self.api_client.force_authenticate(user=new_user)
+        rating = ProductRating.objects.create(user=self.user, product=self.product, number_rating=1)
+        url = reverse('productrating-detail', kwargs={'pk': rating.id})
+        data = {'number_rating': 2}
+        response = self.api_client.patch(url, data=data)
+        assert response.status_code == 403

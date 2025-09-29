@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from sample.models import ProductRating, Product
+from sample.permissions import IsOwnerPermission
 from sample.serializers import ProductRatingSerializer, ProductSerializer
 
 
@@ -20,5 +21,5 @@ class ProductViewSet(ModelViewSet):
 class ProductRatingViewSet(ModelViewSet):
     queryset = ProductRating.objects.all()
     authentication_classes = (BasicAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwnerPermission,)
     serializer_class = ProductRatingSerializer
