@@ -9,10 +9,14 @@ from sample.serializers import ProductRatingSerializer, ProductSerializer
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all().annotate(
-        num_ratings=Count('ratings'),
-        average_rating=Avg('ratings__number_rating', output_field=DecimalField()),
-    ).order_by('-average_rating')
+    queryset = (
+        Product.objects.all()
+        .annotate(
+            num_ratings=Count("ratings"),
+            average_rating=Avg("ratings__number_rating", output_field=DecimalField()),
+        )
+        .order_by("-average_rating")
+    )
     authentication_classes = (BasicAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = ProductSerializer
@@ -21,5 +25,8 @@ class ProductViewSet(ModelViewSet):
 class ProductRatingViewSet(ModelViewSet):
     queryset = ProductRating.objects.all()
     authentication_classes = (BasicAuthentication,)
-    permission_classes = (IsAuthenticated, IsOwnerPermission,)
+    permission_classes = (
+        IsAuthenticated,
+        IsOwnerPermission,
+    )
     serializer_class = ProductRatingSerializer

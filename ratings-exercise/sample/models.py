@@ -23,7 +23,10 @@ class BaseRating(models.Model):
         but DishType would not. It also allows for clear db level constraints and limits migrations to only affecting
         their domain
     """
-    number_rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+
+    number_rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)]
+    )
     is_liked = models.BooleanField(default=False)
 
     class Meta:
@@ -34,45 +37,53 @@ class ProductRating(BaseRating):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        related_name='ratings',
+        related_name="ratings",
     )
     user = models.ForeignKey(
         User,
-        related_name='product_ratings',
+        related_name="product_ratings",
         on_delete=models.CASCADE,
     )
 
     class Meta:
-        constraints = [UniqueConstraint(fields=['product', 'user'], name='unique_product_rating')]
+        constraints = [
+            UniqueConstraint(fields=["product", "user"], name="unique_product_rating")
+        ]
 
 
 class DishTypeRating(BaseRating):
     dish_type = models.ForeignKey(
         DishType,
         on_delete=models.CASCADE,
-        related_name='ratings',
+        related_name="ratings",
     )
     user = models.ForeignKey(
         User,
-        related_name='dish_type_ratings',
+        related_name="dish_type_ratings",
         on_delete=models.CASCADE,
     )
 
     class Meta:
-        constraints = [UniqueConstraint(fields=['dish_type', 'user'], name='unique_dish_type_dish_rating')]
+        constraints = [
+            UniqueConstraint(
+                fields=["dish_type", "user"], name="unique_dish_type_dish_rating"
+            )
+        ]
 
 
 class RecipeRating(BaseRating):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='ratings',
+        related_name="ratings",
     )
     user = models.ForeignKey(
         User,
-        related_name='recipe_ratings',
+        related_name="recipe_ratings",
         on_delete=models.CASCADE,
     )
 
     class Meta:
-        constraints = [UniqueConstraint(fields=['recipe', 'user'], name='unique_recipe_rating')]
+        constraints = [
+            UniqueConstraint(fields=["recipe", "user"], name="unique_recipe_rating")
+        ]

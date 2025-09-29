@@ -23,4 +23,4 @@ except IntegrityError as e:
     pass
 
 
-Product.objects.get_or_create(name='Sample Product 1')
+Product.objects.get_or_create(name="Sample Product 1")
