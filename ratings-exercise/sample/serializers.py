@@ -12,6 +12,9 @@ class ProductRatingSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    average_rating = serializers.DecimalField(max_digits=2, decimal_places=1, read_only=True)
+    num_ratings = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Product
         fields = '__all__'
