@@ -23,7 +23,7 @@ class BaseRating(models.Model):
         but DishType would not. It also allows for clear db level constraints and limits migrations to only affecting
         their domain
     """
-    number_rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    number_rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     is_liked = models.BooleanField(default=False)
 
     class Meta:
